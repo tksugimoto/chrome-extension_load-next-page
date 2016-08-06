@@ -8,6 +8,13 @@
 	"permissions": [
 		"storage"
 	],
+
+	"background": {
+		"persistent": false,
+		"scripts": [
+			"background.js"
+		]
+	},
 	
 	"options_page": "options.html",
 		
