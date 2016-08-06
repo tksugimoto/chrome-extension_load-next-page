@@ -11,13 +11,13 @@ chrome.storage.local.get(settings => {
 	}, []).forEach(setting => {
 		const nextPageLinkSelector = setting["next-page-link"];
 
-		function getNextUrl(doc) {
+		function getNextUrl(doc, base = location.href) {
 			const nextPageLink = doc.querySelector(nextPageLinkSelector);
 			if (!nextPageLink) return null; // 次ページリンク要素が存在しない
 
-			const nextPageUrl = nextPageLink.href;
+			const nextPageUrl = nextPageLink.getAttribute("href");
 			if (!nextPageUrl) return null; // 次ページリンクが存在しない
-			return nextPageUrl;
+			return new URL(nextPageUrl, base).href;
 		}
 
 		if (!document.querySelector(setting["target-element"])) return "対象要素が存在しない";
@@ -41,10 +41,7 @@ chrome.storage.local.get(settings => {
 					const parser = new DOMParser();
 					const doc = parser.parseFromString(htmlSource, "text/html");
 					
-					const base = doc.createElement("base");
-					base.href = nextPageUrl;
-					doc.head.appendChild(base);
-					const nextUrl = getNextUrl(doc);
+					const nextUrl = getNextUrl(doc, nextPageUrl);
 
 					doc.querySelectorAll(setting["target-element"]).forEach(appendElements);
 					container.parentNode.removeChild(container);
