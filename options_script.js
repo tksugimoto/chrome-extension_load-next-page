@@ -7,11 +7,14 @@ const settingEntrys = [{
 }, {
 	name: "対象URL（先頭一致）",
 	key: "target-url",
-	format: "http://example.com/article/"
+	format: "http://example.com/article/",
+	// 入力欄の大きさ（デフォルト値のX倍）
+	sizeX: 2
 }, {
 	name: "対象要素",
 	key: "target-element",
-	format: ".pageProperty, #main, .pagenator"
+	format: ".pageProperty, #main, .pagenator",
+	sizeX: 3
 }, {
 	name: "次ページのリンク要素",
 	key: "next-page-link",
@@ -57,6 +60,7 @@ function addSettingElement(id, setting) {
 		input.setAttribute("data-key", key);
 		input.placeholder = entry.format;
 		if (setting) input.value = setting[key];
+		if (entry.sizeX) input.size *= entry.sizeX;
 		td.appendChild(input);
 		tr.appendChild(td);
 		return {key, input}
