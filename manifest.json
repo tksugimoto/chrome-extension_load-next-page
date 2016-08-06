@@ -1,0 +1,23 @@
+{
+	"name": "Load Next Page",
+	"version": "0.1.0",
+	"manifest_version": 2,
+
+	"description": "次のページを読み込む",
+
+	"permissions": [
+		"storage"
+	],
+	
+	"options_page": "options.html",
+		
+	"content_scripts": [{
+		"matches": [
+			"*://*/*"
+		],
+		"all_frames": true,
+		"js": [
+			"content_script.js"
+		]
+	}]
+}
