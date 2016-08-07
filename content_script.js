@@ -29,6 +29,7 @@ chrome.storage.local.get(settings => {
 		}
 
 		function createGetNextPageButton(nextPageUrl) {
+			if (!nextPageUrl) return;
 			const button = document.createElement("input");
 			button.type = "button";
 			button.value = "次のページを読み込み";
