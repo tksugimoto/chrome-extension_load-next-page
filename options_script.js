@@ -77,12 +77,12 @@ function addSettingElement(id, setting) {
 		fields.forEach(({key, input}) => {
 			savedValue[key] = input.value;
 			const checkChanged = () => {
-				if (savedValue[key] === input.value) {
+				if (savedValue[key] !== input.value) {
 					changedSet.add(key);
 				} else {
 					changedSet.delete(key);
 				}
-				button.disabled = changedSet.size !== 0;
+				button.disabled = changedSet.size === 0;
 			};
 			input.addEventListener("change", checkChanged);
 			input.addEventListener("keydown", evt => {
