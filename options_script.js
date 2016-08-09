@@ -76,13 +76,18 @@ function addSettingElement(id, setting) {
 		const changedSet = new Set();
 		fields.forEach(({key, input}) => {
 			savedValue[key] = input.value;
-			input.addEventListener("change", () => {
+			const checkChanged = () => {
 				if (savedValue[key] === input.value) {
 					changedSet.add(key);
 				} else {
 					changedSet.delete(key);
 				}
 				button.disabled = changedSet.size !== 0;
+			};
+			input.addEventListener("change", checkChanged);
+			input.addEventListener("keydown", evt => {
+				// ChangeイベントはTabキーでの移動先の決定後に発火するため、移動先が保存ボタンだった場合に、disabled = falseにしても反映が間に合わない
+				if (evt.key === "Tab") checkChanged();
 			});
 		});
 
