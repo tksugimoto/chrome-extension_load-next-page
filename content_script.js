@@ -49,6 +49,7 @@ chrome.storage.local.get(settings => {
 					
 					const nextUrl = getNextUrl(doc, nextPageUrl);
 
+					appendElements(document.createElement("hr"));
 					doc.querySelectorAll(setting["target-element"]).forEach(appendElements);
 					container.parentNode.removeChild(container);
 					createGetNextPageButton(nextUrl);
