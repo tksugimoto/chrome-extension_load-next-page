@@ -39,6 +39,9 @@ chrome.storage.local.get(settings => {
 			button.type = "button";
 			button.value = "次のページを読み込み";
 			button.addEventListener("click", () => {
+				button.disabled = true;
+				button.value = "次のページを読み込み中";
+				button.style.color = "graytext";
 				fetch(nextPageUrl, {
 					credentials: "include"
 				}).then(response => {
