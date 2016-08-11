@@ -22,11 +22,16 @@ chrome.storage.local.get(settings => {
 
 		if (!document.querySelector(setting["target-element"])) return "対象要素が存在しない";
 
-		function appendElements(element) {
+		const appendElements = (() => {
+			// 常に"target-element"の最後に挿入する
+			// ページ読み込み時に基準位置を計算
 			const targetElements = document.querySelectorAll(setting["target-element"]);
-			const lastTarget = targetElements[targetElements.length - 1];
-			lastTarget.parentNode.insertBefore(element, lastTarget.nextSibling);
-		}
+			const baseElement = targetElements[targetElements.length - 1].nextSibling;
+			const containerElement = baseElement.parentNode;
+			return element => {
+				containerElement.insertBefore(element, baseElement);
+			};
+		})();
 
 		function createGetNextPageButton(nextPageUrl) {
 			if (!nextPageUrl) return;
