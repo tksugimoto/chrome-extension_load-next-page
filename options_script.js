@@ -35,6 +35,28 @@ loadSetting().then(settings => {
 
 document.getElementById("add").addEventListener("click", addNewSettingElement);
 
+// 設定をjson形式で書き出す
+document.getElementById("share").addEventListener("click", evt => {
+	loadSetting().then(settings => {
+		const settingArray = Object.keys(settings).map(id => settings[id]);
+		const textarea = document.getElementById("share_textarea");
+		textarea.value = JSON.stringify(settingArray, "", "\t");
+		textarea.select();
+	});
+});
+
+// json形式の設定を読み込む
+document.getElementById("load").addEventListener("click", evt => {
+	const textarea = document.getElementById("share_textarea");
+	const settingArray = JSON.parse(textarea.value);
+	const baseId = Date.now();
+	settingArray.forEach((setting, index) => {
+		const id = String(baseId + index);
+		saveSetting(setting, id).then(() => {
+			addSettingElement(id, setting);
+		});
+	});
+});
 
 function addSettingHeader() {
 	const tr = document.createElement("tr");
