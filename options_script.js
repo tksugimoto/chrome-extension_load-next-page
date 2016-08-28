@@ -3,10 +3,12 @@ const tbody = document.getElementById("tbody");
 const settingEntrys = [{
 	name: "対象タイトル（メモ用）",
 	key: "target-title",
+	allowSort: true,
 	format: "Exampleニュース"
 }, {
 	name: "対象URL（先頭一致）",
 	key: "target-url",
+	allowSort: true,
 	format: "http://example.com/article/",
 	// 入力欄の大きさ（デフォルト値のX倍）
 	sizeX: 2
@@ -64,6 +66,27 @@ function addSettingHeader() {
 		const th = document.createElement("th");
 		th.innerText = entry.name;
 		tr.appendChild(th);
+		if (entry.allowSort) {
+			const sortButton = document.createElement("input");
+			sortButton.type = "button";
+			sortButton.value = "ソート";
+			sortButton.addEventListener("click", () => {
+				const elems = document.querySelectorAll(`[data-key=${entry.key}]`);
+				Array.from(elems).map(elem => {
+					return {
+						tr: elem.closest("tr"),
+						value: elem.value
+					};
+				}).sort(({value: a}, {value: b}) => {
+					if(a < b) return 1;
+					if(a > b) return -1;
+					return 0;
+				}).forEach(({tr}) => {
+					tbody.appendChild(tr);
+				});
+			});
+			th.appendChild(sortButton);
+		}
 	});
 	tbody.appendChild(tr);
 }
