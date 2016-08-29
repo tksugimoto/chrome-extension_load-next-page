@@ -60,6 +60,24 @@ document.getElementById("load").addEventListener("click", evt => {
 	});
 });
 
+// 重複削除
+document.getElementById("delete_overlap").addEventListener("click", () => {
+	loadSetting().then(settings => {
+		const cache = new Set();
+		Object.keys(settings).map(id => {
+			const setting = JSON.stringify(settings[id]);
+			if (cache.has(setting)) {
+				console.log("overlap: ", setting);
+				removeSetting(id).then(() => {
+					document.querySelector(`[data-id="${id}"]`).remove();
+				});
+			} else {
+				cache.add(setting);
+			}
+		});
+	})
+});
+
 function addSettingHeader() {
 	const tr = document.createElement("tr");
 	settingEntrys.forEach(entry => {
