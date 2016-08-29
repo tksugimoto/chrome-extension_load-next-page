@@ -38,7 +38,7 @@ loadSetting().then(settings => {
 document.getElementById("add").addEventListener("click", addNewSettingElement);
 
 // 設定をjson形式で書き出す
-document.getElementById("share").addEventListener("click", evt => {
+document.getElementById("share").addEventListener("click", () => {
 	loadSetting().then(settings => {
 		const settingArray = Object.keys(settings).map(id => settings[id]);
 		const textarea = document.getElementById("share_textarea");
@@ -48,7 +48,7 @@ document.getElementById("share").addEventListener("click", evt => {
 });
 
 // json形式の設定を読み込む
-document.getElementById("load").addEventListener("click", evt => {
+document.getElementById("load").addEventListener("click", () => {
 	const textarea = document.getElementById("share_textarea");
 	const settingArray = JSON.parse(textarea.value);
 	const baseId = Date.now();
