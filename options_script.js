@@ -89,7 +89,7 @@ function addSettingHeader() {
 			sortButton.type = "button";
 			sortButton.value = "ソート";
 			sortButton.addEventListener("click", () => {
-				const elems = document.querySelectorAll(`[data-key=${entry.key}]`);
+				const elems = document.querySelectorAll(`[data-key="${entry.key}"]`);
 				Array.from(elems).map(elem => {
 					return {
 						tr: elem.closest("tr"),
