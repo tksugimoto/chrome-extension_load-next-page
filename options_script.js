@@ -69,20 +69,21 @@ document.getElementById("load").addEventListener("click", () => {
 	});
 });
 
-// 重複削除
+// 重複削除（古いものを消す）
 document.getElementById("delete_overlap").addEventListener("click", () => {
 	loadSetting().then(settings => {
-		const cache = new Set();
+		const cache = new Map();
 		Object.keys(settings).map(id => {
 			const setting = JSON.stringify(settings[id]);
 			if (cache.has(setting)) {
 				console.log("overlap: ", setting);
-				removeSetting(id).then(() => {
-					document.querySelector(`[data-id="${id}"]`).remove();
+				const oldId = cache.get(setting);
+				removeSetting(oldId).then(() => {
+					document.querySelector(`[data-id="${oldId}"]`).remove();
 				});
-			} else {
-				cache.add(setting);
 			}
+			// 既に存在する場合は上書き
+			cache.set(setting, id);
 		});
 	})
 });
