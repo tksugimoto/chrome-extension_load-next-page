@@ -27,6 +27,7 @@ const settingEntrys = [{
 	name: "削除"
 }];
 
+let currentSortKey = null;
 addSettingHeader();
 loadSetting().then(settings => {
 	Object.keys(settings).sort().forEach(id => {
@@ -40,7 +41,15 @@ document.getElementById("add").addEventListener("click", addNewSettingElement);
 // 設定をjson形式で書き出す
 document.getElementById("share").addEventListener("click", () => {
 	loadSetting().then(settings => {
+		const ids = Object.keys(settings);
 		const settingArray = Object.keys(settings).map(id => settings[id]);
+		if (currentSortKey) {
+			settingArray.sort(({[currentSortKey]: a}, {[currentSortKey]: b}) => {
+				if(a < b) return 1;
+				if(a > b) return -1;
+				return 0;
+			});
+		}
 		const textarea = document.getElementById("share_textarea");
 		textarea.value = JSON.stringify(settingArray, "", "\t");
 		textarea.select();
@@ -89,6 +98,7 @@ function addSettingHeader() {
 			sortButton.type = "button";
 			sortButton.value = "ソート";
 			sortButton.addEventListener("click", () => {
+				currentSortKey = entry.key;
 				const elems = document.querySelectorAll(`[data-key="${entry.key}"]`);
 				Array.from(elems).map(elem => {
 					return {
