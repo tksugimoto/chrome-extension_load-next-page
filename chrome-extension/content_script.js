@@ -49,7 +49,7 @@ chrome.storage.local.get(settings => {
 				}).then(htmlSource => {
 					const parser = new DOMParser();
 					const doc = parser.parseFromString(htmlSource, "text/html");
-					
+
 					const nextUrl = getNextUrl(doc, nextPageUrl);
 
 					appendElements(document.createElement("hr"));

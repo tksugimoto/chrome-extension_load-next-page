@@ -139,7 +139,7 @@ function addSettingElement(id, setting) {
 		tr.appendChild(td);
 		return {key, input}
 	});
-	
+
 	{
 		const button = document.createElement("input");
 		button.type = "button";
