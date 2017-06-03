@@ -34,9 +34,12 @@ chrome.storage.local.get(settings => {
 		})();
 
 		const encoding = (() => {
-			const meta = document.querySelector('meta[http-equiv="content-type"]');
-			if (meta) {
-				const contentType = meta.content;
+			const metaCharset = document.querySelector("meta[charset]");
+			if (metaCharset) return metaCharset.getAttribute("charset");
+
+			const metaHttpEquiv = document.querySelector('meta[http-equiv="content-type"]');
+			if (metaHttpEquiv) {
+				const contentType = metaHttpEquiv.content;
 				if (contentType.match(/charset=(.+)/i)) {
 					const charset = RegExp.$1;
 					return charset;
