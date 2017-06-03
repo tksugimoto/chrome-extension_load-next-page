@@ -33,6 +33,18 @@ chrome.storage.local.get(settings => {
 			};
 		})();
 
+		const encoding = (() => {
+			const meta = document.querySelector('meta[http-equiv="content-type"]');
+			if (meta) {
+				const contentType = meta.content;
+				if (contentType.match(/charset=(.+)/i)) {
+					const charset = RegExp.$1;
+					return charset;
+				}
+			}
+			return "UTF-8";
+		})();
+
 		function createGetNextPageButton(nextPageUrl) {
 			if (!nextPageUrl) return;
 			const button = document.createElement("input");
@@ -45,7 +57,15 @@ chrome.storage.local.get(settings => {
 				fetch(nextPageUrl, {
 					credentials: "include"
 				}).then(response => {
-					return response.text();
+					return response.blob();
+				}).then(blob => {
+					return new Promise(resolve => {
+						const reader = new FileReader();
+						reader.addEventListener("loadend", () => {
+							resolve(reader.result);
+						});
+						reader.readAsText(blob, encoding);
+					});
 				}).then(htmlSource => {
 					const parser = new DOMParser();
 					const doc = parser.parseFromString(htmlSource, "text/html");
