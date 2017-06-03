@@ -60,15 +60,19 @@ chrome.storage.local.get(settings => {
 				fetch(nextPageUrl, {
 					credentials: "include"
 				}).then(response => {
-					return response.blob();
-				}).then(blob => {
-					return new Promise(resolve => {
-						const reader = new FileReader();
-						reader.addEventListener("loadend", () => {
-							resolve(reader.result);
+					if (encoding.toUpperCase() === "UTF-8") {
+						return response.text();
+					} else {
+						return response.blob().then(blob => {
+							return new Promise(resolve => {
+								const reader = new FileReader();
+								reader.addEventListener("loadend", () => {
+									resolve(reader.result);
+								});
+								reader.readAsText(blob, encoding);
+							});
 						});
-						reader.readAsText(blob, encoding);
-					});
+					}
 				}).then(htmlSource => {
 					const parser = new DOMParser();
 					const doc = parser.parseFromString(htmlSource, "text/html");
