@@ -27,7 +27,7 @@ chrome.storage.local.get(settings => {
 			// ページ読み込み時に基準位置を計算
 			const targetElements = document.querySelectorAll(setting["target-element"]);
 			const baseElement = targetElements[targetElements.length - 1].nextSibling;
-			const containerElement = baseElement.parentNode;
+			const containerElement = targetElements[targetElements.length - 1].parentNode;
 			return element => {
 				containerElement.insertBefore(element, baseElement);
 			};
